@@ -23,8 +23,8 @@ exports.meetings = [{
 },{
     "id": 3,
     "date": "12.03.2015",
-    "startTime": "11:00",
-    "endTime": "12:30",
+    "startTime": "16:00",
+    "endTime": "18:30",
     "roomId": "1",
     "roomName": "The Big Room",
     "creator": "1",
@@ -35,7 +35,7 @@ exports.meetings = [{
     "startTime": "11:00",
     "endTime": "12:00",
     "roomId": "2",
-    "roomName": "The Big Room",
+    "roomName": "The Small Room",
     "creator": "2",
     "creatorName": "Bogdan"
 }];
