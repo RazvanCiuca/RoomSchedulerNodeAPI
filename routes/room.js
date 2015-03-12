@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var m = require('./meeting.js');
 var url = require('url');
 
 //initialize rooms
@@ -7,27 +8,72 @@ var rooms = [{
     "name": "The Big Room",
     "location": "The East Wing",
     "maxOccupancy": "128",
-    "hasProjector": "true",
-    "hasVideoEquipment": "true"
+    "hasProjector": "1",
+    "hasVideoEquipment": "1",
+    "hasFlipCharts": "1"
 
 }, {
     "id": 2,
     "name": "The Small Room",
     "location": "The East Wing",
     "maxOccupancy": "16",
-    "hasProjector": "false",
-    "hasVideoEquipment": "true"
+    "hasProjector": "0",
+    "hasVideoEquipment": "1",
+    "hasFlipCharts": "1"
 }];
 
-exports.search = function (req, res) {
-    var potentialRooms = _.where(rooms, {
-        "hasProjector": req.query.hasProjector,
-        "hasVideoEquipment": req.query.hasVideoEquipment
+exports.test = function(req, res) {
+    res.format({
+        json: function () {
+            res.status(200).json(req.query);
+        }
     });
+};
+
+exports.search = function(req, res) {
+    var conditions = {
+        date: req.query.date,
+        maxOccupancy: req.query.maxOccupancy,
+        hasProjector: (req.query.hasProjector || 0),
+        hasVideoEquipment: (req.query.hasVideoEquipment || 0),
+        roomId: req.query.roomId,
+        duration: req.query.duration,
+        hasFlipCharts: (req.query.hasFlipCharts || 0),
+        startAfter: req.query.startAfter,
+        endBefore: req.query.endBefore
+    };
+
+    var potentialRooms = _.filter(rooms, function(room) {
+
+        return (
+        room.hasProjector >= conditions.hasProjector &&
+        room.hasFlipCharts >= conditions.hasFlipCharts &&
+        room.hasVideoEquipment >= conditions.hasVideoEquipment &&
+        (conditions.roomId == 0 || conditions.roomId === room.id) &&
+        parseInt(room.maxOccupancy) >= parseInt(conditions.maxOccupancy)
+        );
+    });
+
+    var meetingsForEachRoom = [];
+
+    _.forEach(potentialRooms, function(room) {
+        var meetingsInRoom = _.filter(m.meetings, function(meeting){
+            return (
+            meeting.date == conditions.date &&
+            room.id == meeting.roomId &&
+            meeting.endTime > conditions.startAfter &&
+            meeting.startTime < conditions.endBefore
+            );
+        });
+
+        meetingsForEachRoom.push(meetingsInRoom);
+    });
+
+
 
     res.format({
         json: function () {
-            res.status(200).json(potentialRooms);
+            res.status(200).json(meetingsForEachRoom);
         }
     });
 
