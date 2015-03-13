@@ -65,7 +65,8 @@ exports.search = function(req, res) {
             meeting.startTime < conditions.endBefore
             );
         });
-
+        //sort meetingsInRoom
+        meetingsInRoom = _.sortByAll(meetingsInRoom, 'startTime');
         meetingsForEachRoom.push(meetingsInRoom);
     });
 
