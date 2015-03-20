@@ -42,7 +42,6 @@ exports.meetings = [{
 
 exports.getMeetingsOfUser = function (req, res) {
     var userMeetings = _.where(exports.meetings, {"creator" : req.params.id});
-
     res.format({
         json: function () {
             res.status(200).json(userMeetings);
@@ -51,6 +50,7 @@ exports.getMeetingsOfUser = function (req, res) {
 };
 
 exports.getMeetings = function (req, res) {
+
 
     res.format({
         json: function () {
@@ -112,6 +112,7 @@ exports.editMeeting = function (req, res) {
 }
 
 exports.deleteMeeting = function (req, res) {
+    console.log('delete');
     var toBeDeleted = _.findIndex(exports.meetings, { 'id' : parseInt(req.params.id) });
 
     if(toBeDeleted !== -1) {

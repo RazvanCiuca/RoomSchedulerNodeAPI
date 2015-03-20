@@ -31,16 +31,16 @@ exports.test = function(req, res) {
 };
 
 exports.search = function(req, res) {
+    console.log(req.query);
     var conditions = {
         date: req.query.date,
-        maxOccupancy: req.query.maxOccupancy,
+        maxOccupancy: (req.query.maxOccupancy || 0),
         hasProjector: (req.query.hasProjector || 0),
         hasVideoEquipment: (req.query.hasVideoEquipment || 0),
-        roomId: req.query.roomId,
-        duration: req.query.duration,
         hasFlipCharts: (req.query.hasFlipCharts || 0),
-        startAfter: req.query.startAfter,
-        endBefore: req.query.endBefore
+        roomId: req.query.roomId,
+        startAfter: (req.query.startAfter || '08:00'),
+        endBefore: (req.query.endBefore || '23:59')
     };
 
     var potentialRooms = _.filter(rooms, function(room) {
@@ -56,9 +56,12 @@ exports.search = function(req, res) {
 
     var meetingsForEachRoom = [];
 
+
+
     _.forEach(potentialRooms, function(room) {
         var meetingsInRoom = _.filter(m.meetings, function(meeting){
             return (
+            meeting.date == conditions.date &&
             meeting.date == conditions.date &&
             room.id == meeting.roomId &&
             meeting.endTime > conditions.startAfter &&
@@ -67,7 +70,9 @@ exports.search = function(req, res) {
         });
         //sort meetingsInRoom
         meetingsInRoom = _.sortByAll(meetingsInRoom, 'startTime');
-        meetingsForEachRoom.push(meetingsInRoom);
+
+        room.meetings = meetingsInRoom;
+        meetingsForEachRoom.push(room);
     });
 
 
