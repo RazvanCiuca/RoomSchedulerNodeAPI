@@ -4,7 +4,7 @@ var url = require('url');
 //initialize users
 exports.meetings = [{
     "id": 1,
-    "date": "12.03.2015",
+    "date": (new Date()).toLocaleDateString(),
     "startTime": "08:00",
     "endTime": "09:00",
     "roomId": "1",
@@ -13,7 +13,7 @@ exports.meetings = [{
     "creatorName": "Razvan"
 },{
     "id": 2,
-    "date": "12.03.2015",
+    "date": (new Date()).toLocaleDateString(),
     "startTime": "13:00",
     "endTime": "14:00",
     "roomId": "1",
@@ -22,7 +22,7 @@ exports.meetings = [{
     "creatorName": "Razvan"
 },{
     "id": 3,
-    "date": "12.03.2015",
+    "date": (new Date()).toLocaleDateString(),
     "startTime": "16:00",
     "endTime": "18:30",
     "roomId": "1",
@@ -31,7 +31,7 @@ exports.meetings = [{
     "creatorName": "Razvan"
 },{
     "id": 4,
-    "date": "12.03.2015",
+    "date": (new Date()).toLocaleDateString(),
     "startTime": "11:00",
     "endTime": "12:00",
     "roomId": "2",
@@ -67,6 +67,7 @@ exports.createMeeting = function (req, res) {
 
     res.format({
         json: function () {
+            console.log(exports.meetings[exports.meetings.length - 1]);
             res.status(200).json(exports.meetings[exports.meetings.length - 1]);
         }
     });
@@ -112,7 +113,7 @@ exports.editMeeting = function (req, res) {
 }
 
 exports.deleteMeeting = function (req, res) {
-    console.log('delete');
+
     var toBeDeleted = _.findIndex(exports.meetings, { 'id' : parseInt(req.params.id) });
 
     if(toBeDeleted !== -1) {

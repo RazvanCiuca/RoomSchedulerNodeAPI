@@ -31,7 +31,7 @@ exports.test = function(req, res) {
 };
 
 exports.search = function(req, res) {
-    console.log(req.query);
+
     var conditions = {
         date: req.query.date,
         maxOccupancy: (req.query.maxOccupancy || 0),

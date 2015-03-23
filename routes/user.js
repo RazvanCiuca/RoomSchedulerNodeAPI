@@ -3,13 +3,13 @@ var url = require('url');
 
 //initialize users
 var users = [{
-    "id": 1,
+    "id": '1',
     "firstName": "Razvan",
     "lastName": "Ciuca",
     "type": "admin",
     "email": "razvan.ciuca@arnia.ro"
 }, {
-    "id": 2,
+    "id": '2',
     "firstName": "Bogdan",
     "lastName": "Nechita",
     "type": "standard",
@@ -40,7 +40,7 @@ exports.createUser = function (req, res) {
 
 exports.getUser = function (req, res) {
 
-    var user = _.find(users, { 'id' : parseInt(req.params.id) });
+    var user = _.find(users, { 'id' :req.params.id });
 
     if(user) {
         res.format({
@@ -58,7 +58,7 @@ exports.getUser = function (req, res) {
 };
 
 exports.editUser = function (req, res) {
-    var toBeUpdated = _.findIndex(users, { 'id' : parseInt(req.params.id) });
+    var toBeUpdated = _.findIndex(users, { 'id' :req.params.id });
 
     if(toBeUpdated !== -1) {
         users[toBeUpdated] = req.body;
@@ -78,7 +78,7 @@ exports.editUser = function (req, res) {
 }
 
 exports.deleteUser = function (req, res) {
-    var toBeDeleted = _.findIndex(users, { 'id' : parseInt(req.params.id) });
+    var toBeDeleted = _.findIndex(users, { 'id' : req.params.id });
 
     if(toBeDeleted !== -1) {
         users.splice(toBeDeleted,1);
