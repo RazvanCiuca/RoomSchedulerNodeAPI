@@ -8,18 +8,18 @@ var rooms = [{
     "name": "The Big Room",
     "location": "The East Wing",
     "maxOccupancy": "128",
-    "hasProjector": "1",
-    "hasVideoEquipment": "1",
-    "hasFlipCharts": "1"
+    "hasProjector": 'true',
+    "hasVideoEquipment": 'true',
+    "hasFlipCharts": 'true'
 
 }, {
     "id": 2,
     "name": "The Small Room",
     "location": "The East Wing",
     "maxOccupancy": "16",
-    "hasProjector": "0",
-    "hasVideoEquipment": "1",
-    "hasFlipCharts": "1"
+    "hasProjector": 'false',
+    "hasVideoEquipment": 'true',
+    "hasFlipCharts": 'true'
 }];
 
 exports.test = function(req, res) {
@@ -31,13 +31,12 @@ exports.test = function(req, res) {
 };
 
 exports.search = function(req, res) {
-
     var conditions = {
         date: req.query.date,
         maxOccupancy: (req.query.maxOccupancy || 0),
-        hasProjector: (req.query.hasProjector || 0),
-        hasVideoEquipment: (req.query.hasVideoEquipment || 0),
-        hasFlipCharts: (req.query.hasFlipCharts || 0),
+        hasProjector: req.query.hasProjector,
+        hasVideoEquipment: req.query.hasVideoEquipment,
+        hasFlipCharts: req.query.hasFlipCharts,
         roomId: req.query.roomId,
         startAfter: (req.query.startAfter || '08:00'),
         endBefore: (req.query.endBefore || '23:59')
@@ -46,9 +45,9 @@ exports.search = function(req, res) {
     var potentialRooms = _.filter(rooms, function(room) {
 
         return (
-        room.hasProjector >= conditions.hasProjector &&
-        room.hasFlipCharts >= conditions.hasFlipCharts &&
-        room.hasVideoEquipment >= conditions.hasVideoEquipment &&
+        (room.hasProjector == 'true' || (conditions.hasProjector == 'false')) &&
+        (room.hasFlipCharts == 'true' || (conditions.hasFlipCharts == 'false')) &&
+        (room.hasVideoEquipment == 'true'|| (conditions.hasVideoEquipment == 'false')) &&
         (conditions.roomId == 0 || conditions.roomId === room.id) &&
         parseInt(room.maxOccupancy) >= parseInt(conditions.maxOccupancy)
         );

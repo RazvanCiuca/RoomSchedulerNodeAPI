@@ -10,7 +10,11 @@ exports.meetings = [{
     "roomId": "1",
     "roomName": "The Big Room",
     "creator": "1",
-    "creatorName": "Razvan"
+    "creatorName": "Razvan",
+    "organizers": [
+        "Bogdan",
+        "Razvan"
+    ]
 },{
     "id": 2,
     "date": (new Date()).toLocaleDateString(),
@@ -19,7 +23,11 @@ exports.meetings = [{
     "roomId": "1",
     "roomName": "The Big Room",
     "creator": "1",
-    "creatorName": "Razvan"
+    "creatorName": "Razvan",
+    "organizers": [
+        "Bogdan",
+        "Razvan"
+    ]
 },{
     "id": 3,
     "date": (new Date()).toLocaleDateString(),
@@ -28,7 +36,11 @@ exports.meetings = [{
     "roomId": "1",
     "roomName": "The Big Room",
     "creator": "1",
-    "creatorName": "Razvan"
+    "creatorName": "Razvan",
+    "organizers": [
+        "Bogdan",
+        "Razvan"
+    ]
 },{
     "id": 4,
     "date": (new Date()).toLocaleDateString(),
@@ -37,8 +49,40 @@ exports.meetings = [{
     "roomId": "2",
     "roomName": "The Small Room",
     "creator": "2",
-    "creatorName": "Bogdan"
+    "creatorName": "Bogdan",
+    "organizers": [
+        "Bogdan",
+        "Razvan"
+    ]
+},{
+    "id": 5,
+    "date": '3/25/2015',
+    "startTime": "11:00",
+    "endTime": "12:00",
+    "roomId": "2",
+    "roomName": "The Small Room",
+    "creator": "3",
+    "creatorName": "Iulia",
+    "organizers": [
+        "Bogdan",
+        "Razvan"
+    ]
+},{
+    "id": 6,
+    "date": '3/26/2015',
+    "startTime": "11:00",
+    "endTime": "12:00",
+    "roomId": "1",
+    "roomName": "The Big Room",
+    "creator": "2",
+    "creatorName": "Bogdan",
+    "organizers": [
+        "Bogdan",
+        "Razvan"
+    ]
 }];
+
+
 
 exports.getMeetingsOfUser = function (req, res) {
     var userMeetings = _.where(exports.meetings, {"creator" : req.params.id});
@@ -80,6 +124,7 @@ exports.getMeeting = function (req, res) {
     if(meeting) {
         res.format({
             json: function () {
+                console.log(meeting);
                 res.status(200).json(meeting);
             }
         });

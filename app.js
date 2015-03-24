@@ -28,6 +28,8 @@ app.get('/', function(request, response) {
 //USERS
 app.get('/api/users', user.getUsers); //get all users
 app.get('/api/users/:id([0-9]+)', user.getUser); //get a specific user
+app.get('/api/user/:username([a-zA-Z0-9]+)', user.getUserByUsername); //get a specific user
+
 app.post('/api/users', user.createUser); //create a user
 app.put('/api/users/:id', user.editUser); //edit a user
 app.delete('/api/users/:id', user.deleteUser); //delete a user

@@ -4,12 +4,14 @@ var url = require('url');
 //initialize users
 var users = [{
     "id": '1',
+    "username": "Razvan",
     "firstName": "Razvan",
     "lastName": "Ciuca",
     "type": "admin",
     "email": "razvan.ciuca@arnia.ro"
 }, {
     "id": '2',
+    "username": "Bogdan",
     "firstName": "Bogdan",
     "lastName": "Nechita",
     "type": "standard",
@@ -36,6 +38,25 @@ exports.createUser = function (req, res) {
             res.status(200).json(users[users.length - 1]);
         }
     });
+};
+
+exports.getUserByUsername = function (req, res) {
+
+    var user = _.find(users, { 'username' :req.params.username });
+
+    if(user) {
+        res.format({
+            json: function () {
+                res.status(200).json(user);
+            }
+        });
+    } else {
+        res.format({
+            json: function () {
+                res.status(404).json("that user does not exist");
+            }
+        });
+    };
 };
 
 exports.getUser = function (req, res) {
