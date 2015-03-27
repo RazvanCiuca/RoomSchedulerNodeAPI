@@ -8,18 +8,18 @@ var rooms = [{
     "name": "The Big Room",
     "location": "The East Wing",
     "maxOccupancy": "128",
-    "hasProjector": 'true',
-    "hasVideoEquipment": 'true',
-    "hasFlipCharts": 'true'
+    "hasProjector": true,
+    "hasVideoEquipment": true,
+    "hasFlipCharts": true
 
 }, {
     "id": 2,
     "name": "The Small Room",
     "location": "The East Wing",
     "maxOccupancy": "16",
-    "hasProjector": 'false',
-    "hasVideoEquipment": 'true',
-    "hasFlipCharts": 'true'
+    "hasProjector": false,
+    "hasVideoEquipment": true,
+    "hasFlipCharts": true
 }];
 
 exports.test = function(req, res) {
@@ -31,6 +31,7 @@ exports.test = function(req, res) {
 };
 
 exports.search = function(req, res) {
+    //console.log(req.query);
     var conditions = {
         date: req.query.date,
         maxOccupancy: (req.query.maxOccupancy || 0),
@@ -48,7 +49,7 @@ exports.search = function(req, res) {
         (room.hasProjector == 'true' || (conditions.hasProjector == 'false')) &&
         (room.hasFlipCharts == 'true' || (conditions.hasFlipCharts == 'false')) &&
         (room.hasVideoEquipment == 'true'|| (conditions.hasVideoEquipment == 'false')) &&
-        (conditions.roomId == 0 || conditions.roomId === room.id) &&
+        (conditions.roomId == 0 || conditions.roomId == room.id) &&
         parseInt(room.maxOccupancy) >= parseInt(conditions.maxOccupancy)
         );
     });
@@ -94,7 +95,7 @@ exports.getRooms = function (req, res) {
 };
 
 exports.createRoom = function (req, res) {
-
+    //console.log(req.body);
     var lastId = rooms[rooms.length - 1].id;
     rooms.push(req.body);
     rooms[rooms.length - 1].id = lastId + 1;
@@ -107,7 +108,6 @@ exports.createRoom = function (req, res) {
 };
 
 exports.getRoom = function (req, res) {
-
     var room = _.find(rooms, { 'id' : parseInt(req.params.id) });
 
     if(room) {

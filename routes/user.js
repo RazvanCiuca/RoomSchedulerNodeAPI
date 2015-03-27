@@ -3,14 +3,14 @@ var url = require('url');
 
 //initialize users
 var users = [{
-    "id": '1',
+    "id": 1,
     "username": "Razvan",
     "firstName": "Razvan",
     "lastName": "Ciuca",
     "type": "admin",
     "email": "razvan.ciuca@arnia.ro"
 }, {
-    "id": '2',
+    "id": 2,
     "username": "Bogdan",
     "firstName": "Bogdan",
     "lastName": "Nechita",
@@ -28,7 +28,7 @@ exports.getUsers = function (req, res) {
 };
 
 exports.createUser = function (req, res) {
-
+    console.log('created user');
     var lastId = users[users.length - 1].id;
     users.push(req.body);
     users[users.length - 1].id = lastId + 1;
@@ -61,7 +61,7 @@ exports.getUserByUsername = function (req, res) {
 
 exports.getUser = function (req, res) {
 
-    var user = _.find(users, { 'id' :req.params.id });
+    var user = _.find(users, { 'id' : parseInt(req.params.id) });
 
     if(user) {
         res.format({
@@ -79,8 +79,7 @@ exports.getUser = function (req, res) {
 };
 
 exports.editUser = function (req, res) {
-    var toBeUpdated = _.findIndex(users, { 'id' :req.params.id });
-
+    var toBeUpdated = _.findIndex(users, { 'id': req.body.id });
     if(toBeUpdated !== -1) {
         users[toBeUpdated] = req.body;
 
@@ -99,7 +98,8 @@ exports.editUser = function (req, res) {
 }
 
 exports.deleteUser = function (req, res) {
-    var toBeDeleted = _.findIndex(users, { 'id' : req.params.id });
+
+    var toBeDeleted = _.findIndex(users, { 'id' : parseInt(req.params.id) });
 
     if(toBeDeleted !== -1) {
         users.splice(toBeDeleted,1);
@@ -115,5 +115,5 @@ exports.deleteUser = function (req, res) {
                 res.status(404).json("that user does not exist");
             }
         });
-    };
+    }
 };

@@ -1,4 +1,4 @@
-var express = require('express')
+var express = require('express');
 var app = express();
 var user = require('./routes/user');
 var room = require('./routes/room');
@@ -28,11 +28,12 @@ app.get('/', function(request, response) {
 //USERS
 app.get('/api/users', user.getUsers); //get all users
 app.get('/api/users/:id([0-9]+)', user.getUser); //get a specific user
-app.get('/api/user/:username([a-zA-Z0-9]+)', user.getUserByUsername); //get a specific user
-
+app.get('/api/user/:username', user.getUserByUsername); //get a specific user
 app.post('/api/users', user.createUser); //create a user
 app.put('/api/users/:id', user.editUser); //edit a user
 app.delete('/api/users/:id', user.deleteUser); //delete a user
+app.get('/api/users/:id/meetings', meeting.getMeetingsOfUser);
+
 //ROOMS
 app.get('/api/rooms', room.getRooms); //get all rooms
 app.get('/api/rooms/:id([0-9]+)', room.getRoom); //get a specific room
@@ -43,10 +44,13 @@ app.delete('/api/rooms/:id', room.deleteRoom); //delete a room
 //MEETINGS
 app.get('/api/meetings', meeting.getMeetings); //get all meetings
 app.get('/api/meetings/:id', meeting.getMeeting); //get a specific meeting
+app.post('/api/meetings/:id([0-9]+)/:name', meeting.addOrganizer);
 app.post('/api/meetings', meeting.createMeeting); //create a meeting
 app.put('/api/meetings/:id', meeting.editMeeting); //edit a meeting
-app.delete('/api/meetings/:id', meeting.deleteMeeting); //delete a meeting
-app.get('/api/users/:id/meetings', meeting.getMeetingsOfUser);
+app.delete('/api/meetings/:id([0-9]+)/:name', meeting.deleteOrganizer); //delete a meeting
+
+app.delete('/api/meetings/:id([0-9]+)', meeting.deleteMeeting); //delete a meeting
+
 
 app.listen(app.get('port'), function() {
     console.log("Node app is running at localhost:" + app.get('port'))
